@@ -1,4 +1,4 @@
-# Allo Inventory
+# Allo Health Task
 
 **Multi-warehouse inventory reservation system with race-condition-safe checkouts.**
 
@@ -89,7 +89,7 @@ npm install
 ### 2. Configure environment
 
 ```bash
-cp .env.example .env.local
+ .env or .env.local
 ```
 
 ```env
