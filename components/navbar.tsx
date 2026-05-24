@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Moon, Package2, SunMedium } from "lucide-react";
+import { Moon, SunMedium } from "lucide-react";
 import Link from "next/link";
 
 import { AvatarMenu } from "@/components/auth/avatar-menu";
@@ -28,10 +28,12 @@ export function Navbar() {
               className="h-full w-full object-cover"
             />
           </div>
+
           <div className="min-w-0">
             <p className="truncate text-xs font-bold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
               Allo Health
             </p>
+
             <p className="truncate text-lg font-black text-slate-950 dark:text-white">
               Inventory Task
             </p>
@@ -45,12 +47,14 @@ export function Navbar() {
           >
             Inventory
           </Link>
+
           <Link
             href="/#features"
             className="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-900/5 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
           >
             Features
           </Link>
+
           {isAuthenticated ? (
             <Link
               href="/user-reserved"
@@ -59,10 +63,6 @@ export function Navbar() {
               My Reservations
             </Link>
           ) : null}
-          <div className="flex items-center gap-2 rounded-full bg-slate-950 px-3 py-2 text-xs font-semibold text-white dark:bg-white dark:text-slate-950">
-            <Package2 className="h-3.5 w-3.5" />
-            Live stock locks
-          </div>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -73,8 +73,13 @@ export function Navbar() {
             onClick={toggleMode}
             className="h-11 w-11 rounded-full"
           >
-            {mode === "dark" ? <SunMedium className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {mode === "dark" ? (
+              <SunMedium className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
           </Button>
+
           <AvatarMenu />
         </div>
       </div>
