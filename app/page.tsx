@@ -146,9 +146,9 @@ export default function HomePage() {
                     Warehouse pulse
                   </h2>
                 </div>
-                <div className="flex h-14 w-14 items-center justify-center rounded-[22px] bg-gradient-to-br from-black via-zinc-700 to-white text-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] dark:text-black">
-                  <Orbit className="h-6 w-6" />
-                </div>
+                <div className="flex h-14 w-14 items-center justify-center rounded-[22px] bg-black text-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] dark:bg-white dark:text-black">
+  <Orbit className="h-6 w-6" />
+</div>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">

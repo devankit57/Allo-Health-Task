@@ -86,7 +86,7 @@ export function ReservationDetails({
               <div className="rounded-[28px] border border-white/20 bg-slate-950 p-6 text-white dark:bg-white dark:text-slate-950">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold opacity-80">Animated checkout window</p>
+                    <p className="text-sm font-semibold opacity-80">Checkout window</p>
                     <p className="mt-2 text-2xl font-black">
                       Confirm before the timer lands at zero.
                     </p>

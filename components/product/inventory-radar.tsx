@@ -33,22 +33,33 @@ function Radar({ className }: { className?: string }) {
   return (
     <div
       className={twMerge(
-        "relative flex h-[18rem] w-[18rem] items-center justify-center rounded-full sm:h-[22rem] sm:w-[22rem]",
+        "relative flex h-[20rem] w-[20rem] items-center justify-center rounded-full sm:h-[26rem] sm:w-[26rem]",
         className
       )}
     >
       <style>{`
         @keyframes radar-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
+
         .animate-radar-spin {
           animation: radar-spin 12s linear infinite;
         }
       `}</style>
 
+      {/* Radar Background */}
       <div className="absolute inset-0 rounded-full border border-black/10 bg-[radial-gradient(circle,rgba(0,0,0,0.03),transparent_60%)] dark:border-white/10 dark:bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_60%)]" />
 
+      {/* Axis */}
+      <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-black/10 dark:bg-white/10" />
+      <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-black/10 dark:bg-white/10" />
+
+      {/* Radar Sweep */}
       <div
         style={{ transformOrigin: "50% 50%" }}
         className="animate-radar-spin absolute inset-0 z-10"
@@ -56,16 +67,18 @@ function Radar({ className }: { className?: string }) {
         <div className="absolute left-1/2 top-1/2 h-[1px] w-1/2 -translate-y-1/2 bg-gradient-to-r from-black/70 to-transparent dark:from-white/70" />
       </div>
 
+      {/* Radar Rings */}
       {circles.map((_, idx) => (
         <Circle
           key={`circle-${idx}`}
           idx={idx}
           style={{
-            height: `${(idx + 1) * 4.25}rem`,
-            width: `${(idx + 1) * 4.25}rem`
+            height: `${(idx + 1) * 5}rem`,
+            width: `${(idx + 1) * 5}rem`
           }}
         />
       ))}
+
     </div>
   );
 }
@@ -83,19 +96,21 @@ function WarehouseNode({
     <motion.div
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.25, delay }}
+      transition={{ duration: 0.3, delay }}
       className="absolute z-20"
       style={style}
     >
-      <div className="w-24 rounded-[18px] border border-black/10 bg-white/92 p-2.5 text-center shadow-[0_14px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/88 sm:w-28">
-        <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-2xl bg-black text-white dark:bg-white dark:text-black">
-          <Building2 className="h-3.5 w-3.5" />
+      <div className="w-28 rounded-[22px] border border-black/10 bg-white/92 p-3 text-center shadow-[0_18px_40px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/88">
+        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-2xl bg-black text-white dark:bg-white dark:text-black">
+          <Building2 className="h-4 w-4" />
         </div>
-        <p className="mt-2 text-xs font-bold leading-4 text-slate-950 dark:text-white sm:text-sm">
+
+        <p className="mt-2 text-sm font-black text-slate-950 dark:text-white">
           {warehouse.name}
         </p>
-        <p className="mt-1 flex items-center justify-center gap-1 text-[10px] leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">
-          <MapPin className="h-2.5 w-2.5" />
+
+        <p className="mt-1 flex items-center justify-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+          <MapPin className="h-3 w-3" />
           {warehouse.location}
         </p>
       </div>
@@ -103,78 +118,85 @@ function WarehouseNode({
   );
 }
 
-function getWarehousePlacement(index: number) {
-  const cardinalPlacements = [
-    { x: 0, y: -30 },
-    { x: 30, y: 0 },
-    { x: 0, y: 30 },
-    { x: -30, y: 0 }
-  ];
+function getWarehousePlacement(warehouse: Warehouse) {
+  const warehouseName = warehouse.name.toLowerCase();
 
-  if (index < cardinalPlacements.length) {
-    return cardinalPlacements[index];
+  // Proper directional placement
+  if (warehouseName.includes("north")) {
+    return {
+      x: 0,
+      y: -160
+    };
   }
 
-  const adjustedIndex = index - cardinalPlacements.length;
-  const ringCapacities = [8, 12, 16, 20];
-  const ringRadii = [16, 26, 35, 43];
-
-  let remainingIndex = adjustedIndex;
-
-  for (let ring = 0; ring < ringCapacities.length; ring += 1) {
-    const capacity = ringCapacities[ring];
-
-    if (remainingIndex < capacity) {
-      const angle = (remainingIndex / capacity) * Math.PI * 2 - Math.PI / 2;
-
-      return {
-        x: Math.cos(angle) * ringRadii[ring],
-        y: Math.sin(angle) * ringRadii[ring]
-      };
-    }
-
-    remainingIndex -= capacity;
+  if (warehouseName.includes("east")) {
+    return {
+      x: 160,
+      y: 0
+    };
   }
 
-  const overflowAngle = (remainingIndex / 24) * Math.PI * 2 - Math.PI / 2;
-  const overflowRadius = 48;
+  if (warehouseName.includes("south")) {
+    return {
+      x: 0,
+      y: 160
+    };
+  }
 
+  if (warehouseName.includes("west")) {
+    return {
+      x: -160,
+      y: 0
+    };
+  }
+
+  // fallback center
   return {
-    x: Math.cos(overflowAngle) * overflowRadius,
-    y: Math.sin(overflowAngle) * overflowRadius
+    x: 0,
+    y: 0
   };
 }
 
-export function InventoryRadar({ warehouses }: { warehouses: Warehouse[] }) {
+export function InventoryRadar({
+  warehouses
+}: {
+  warehouses: Warehouse[];
+}) {
   return (
     <section className="mt-12">
       <Card className="overflow-hidden">
         <CardContent className="grid gap-8 p-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          {/* Left Content */}
           <div className="space-y-4">
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
               Warehouse Radar
             </p>
+
             <h2 className="text-3xl font-black text-slate-950 dark:text-white">
               Live view of your inventory hubs
             </h2>
+
             <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-              A quick visual map of the warehouses currently powering reservations across the system.
+              A quick visual map of the warehouses currently powering
+              reservations across the system.
             </p>
           </div>
 
-          <div className="relative flex min-h-[30rem] items-center justify-center overflow-hidden rounded-[30px] border border-black/8 bg-white/65 p-4 dark:border-white/10 dark:bg-slate-950/45 sm:min-h-[34rem]">
-            <Radar className="sm:h-[24rem] sm:w-[24rem]" />
+          {/* Radar */}
+          <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-[32px] border border-black/8 bg-white/65 p-4 dark:border-white/10 dark:bg-slate-950/45 sm:min-h-[38rem]">
+            <Radar />
+
             {warehouses.map((warehouse, index) => {
-              const { x, y } = getWarehousePlacement(index);
+              const { x, y } = getWarehousePlacement(warehouse);
 
               return (
                 <WarehouseNode
                   key={warehouse.id}
                   warehouse={warehouse}
-                  delay={0.12 + index * 0.08}
+                  delay={0.15 + index * 0.08}
                   style={{
-                    left: `calc(50% + ${x}%)`,
-                    top: `calc(50% + ${y}%)`,
+                    left: `calc(50% + ${x}px)`,
+                    top: `calc(50% + ${y}px)`,
                     transform: "translate(-50%, -50%)"
                   }}
                 />

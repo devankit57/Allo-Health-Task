@@ -127,7 +127,7 @@ export default async function UserReservedPage() {
           <p className="max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">
             Reservations linked to{" "}
             <span className="font-semibold">{userEmail}</span>
-            from the MongoDB reservations collection.
+            
           </p>
         </div>
 
